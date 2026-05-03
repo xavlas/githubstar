@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', system-ui, sans-serif;
+  
+  --color-background: #0f1117;
+  --color-surface: #1a1d24;
+  --color-surface-hover: #22262f;
+  --color-border: #2e323e;
+  
+  --color-primary: #3b82f6;
+  --color-primary-hover: #60a5fa;
+  --color-accent: #8b5cf6;
+}
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+  body {
+    @apply bg-background text-gray-100 font-sans antialiased min-h-screen selection:bg-primary/30 selection:text-white;
+  }
+}
