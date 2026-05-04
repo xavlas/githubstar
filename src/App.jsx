@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { format, subDays, subMonths, subYears } from 'date-fns';
-import { Star, GitFork, CircleAlert, TrendingUp, Calendar, Code2, Globe, Tag, Sun, Moon } from 'lucide-react';
+import { Star, GitFork, CircleAlert, TrendingUp, Calendar, Code2, Globe, Tag, Sun, Moon, ChevronDown, ChevronUp } from 'lucide-react';
 
 const TIMEFRAMES = [
   { id: 'daily', label: 'Today' },
@@ -33,6 +33,8 @@ function App() {
   const [error, setError] = useState(null);
   const [lastUpdated, setLastUpdated] = useState(null);
   const [isDark, setIsDark] = useState(true);
+  const [isLangExpanded, setIsLangExpanded] = useState(true);
+  const [isTopicExpanded, setIsTopicExpanded] = useState(true);
 
   useEffect(() => {
     if (!isDark) {
@@ -139,12 +141,18 @@ function App() {
           {/* Sidebar / Filters */}
           <div className="w-full md:w-64 shrink-0">
             <div className="sticky top-28 space-y-6">
-              <div>
-                <h3 className="text-sm font-semibold tracking-wider text-text-muted uppercase mb-4 flex items-center gap-2">
-                  <Code2 className="w-4 h-4" />
-                  Languages
-                </h3>
-                <div className="flex flex-col gap-1">
+              <div className="border-b border-border pb-4">
+                <button 
+                  onClick={() => setIsLangExpanded(!isLangExpanded)}
+                  className="w-full text-sm font-semibold tracking-wider text-text-muted uppercase mb-2 flex items-center justify-between group"
+                >
+                  <div className="flex items-center gap-2">
+                    <Code2 className="w-4 h-4 group-hover:text-primary transition-colors" />
+                    Languages
+                  </div>
+                  {isLangExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                </button>
+                <div className={`flex flex-col gap-1 transition-all duration-300 overflow-hidden ${isLangExpanded ? 'max-h-[500px] opacity-100 mt-4' : 'max-h-0 opacity-0'}`}>
                   {LANGUAGES.map(lang => (
                     <button
                       key={lang}
@@ -163,11 +171,17 @@ function App() {
               </div>
 
               <div>
-                <h3 className="text-sm font-semibold tracking-wider text-text-muted uppercase mb-4 flex items-center gap-2">
-                  <Tag className="w-4 h-4" />
-                  Topics
-                </h3>
-                <div className="flex flex-col gap-1">
+                <button 
+                  onClick={() => setIsTopicExpanded(!isTopicExpanded)}
+                  className="w-full text-sm font-semibold tracking-wider text-text-muted uppercase mb-2 flex items-center justify-between group"
+                >
+                  <div className="flex items-center gap-2">
+                    <Tag className="w-4 h-4 group-hover:text-primary transition-colors" />
+                    Topics
+                  </div>
+                  {isTopicExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                </button>
+                <div className={`flex flex-col gap-1 transition-all duration-300 overflow-hidden ${isTopicExpanded ? 'max-h-[500px] opacity-100 mt-4' : 'max-h-0 opacity-0'}`}>
                   {TOPICS.map(t => (
                     <button
                       key={t.id}
