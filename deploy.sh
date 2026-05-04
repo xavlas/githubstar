@@ -1,8 +1,18 @@
 #!/bin/bash
-echo "Deploying GitHub Trending App via Docker..."
+echo "🚀 Déploiement de GitHub Trending App..."
+
+# Détecter la commande docker compose
 if command -v docker-compose &> /dev/null; then
-    docker-compose up -d --build
+    DOCKER_CMD="docker-compose"
 else
-    docker compose up -d --build
+    DOCKER_CMD="docker compose"
 fi
-echo "Deployment complete! Application is running at http://localhost:8080"
+
+# Nettoyer et recréer pour être sûr que tout est à jour
+echo "🧹 Nettoyage des anciens conteneurs..."
+$DOCKER_CMD down
+
+echo "🏗️ Reconstruction et lancement..."
+$DOCKER_CMD up -d --build --force-recreate
+
+echo "✨ Déploiement terminé ! L'application tourne sur http://localhost:8080"
