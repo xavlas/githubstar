@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { format, subDays, subMonths, subYears } from 'date-fns';
-import { Star, GitFork, CircleAlert, TrendingUp, Calendar, Code2, Globe } from 'lucide-react';
+import { Star, GitFork, CircleAlert, TrendingUp, Calendar, Code2, Globe, Tag } from 'lucide-react';
 
 const TIMEFRAMES = [
   { id: 'daily', label: 'Today' },
@@ -13,9 +13,21 @@ const LANGUAGES = [
   'All', 'JavaScript', 'TypeScript', 'Python', 'Java', 'C++', 'Go', 'Rust', 'PHP', 'Ruby', 'Swift', 'Kotlin'
 ];
 
+const TOPICS = [
+  { id: 'All', label: 'All Topics' },
+  { id: 'ai', label: 'IA (AI)' },
+  { id: 'video', label: 'Video' },
+  { id: 'web', label: 'Web' },
+  { id: 'mobile', label: 'Mobile' },
+  { id: 'game', label: 'Game' },
+  { id: 'security', label: 'Security' },
+  { id: 'awesome', label: 'Awesome' }
+];
+
 function App() {
   const [timeframe, setTimeframe] = useState('daily');
   const [language, setLanguage] = useState('All');
+  const [topic, setTopic] = useState('All');
   const [repos, setRepos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -41,6 +53,9 @@ function App() {
         let q = `created:>${dateStr}`;
         if (language !== 'All') {
           q += ` language:${language}`;
+        }
+        if (topic !== 'All') {
+          q += ` topic:${topic}`;
         }
         
         const res = await fetch(`https://api.github.com/search/repositories?q=${encodeURIComponent(q)}&sort=stars&order=desc&per_page=30`);
@@ -68,7 +83,7 @@ function App() {
     }, 10 * 60 * 1000);
     
     return () => clearInterval(interval);
-  }, [timeframe, language]);
+  }, [timeframe, language, topic]);
 
   return (
     <div className="min-h-screen bg-background text-gray-200 font-sans selection:bg-primary/30">
@@ -127,6 +142,29 @@ function App() {
                   ))}
                 </div>
               </div>
+
+              <div>
+                <h3 className="text-sm font-semibold tracking-wider text-gray-400 uppercase mb-4 flex items-center gap-2">
+                  <Tag className="w-4 h-4" />
+                  Topics
+                </h3>
+                <div className="flex flex-col gap-1">
+                  {TOPICS.map(t => (
+                    <button
+                      key={t.id}
+                      onClick={() => setTopic(t.id)}
+                      className={`text-left px-3 py-2 text-sm rounded-lg transition-colors flex justify-between items-center ${
+                        topic === t.id 
+                          ? 'bg-primary/20 text-primary font-medium' 
+                          : 'text-gray-400 hover:text-gray-200 hover:bg-surface'
+                      }`}
+                    >
+                      {t.label}
+                      {topic === t.id && <div className="w-1.5 h-1.5 rounded-full bg-primary" />}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
 
@@ -134,7 +172,7 @@ function App() {
           <div className="flex-1">
             <div className="mb-6 flex items-center justify-between">
               <h2 className="text-2xl font-semibold text-white">
-                Trending {language === 'All' ? 'Repositories' : `${language} Repositories`}
+                Trending {topic !== 'All' ? TOPICS.find(t => t.id === topic)?.label : ''} {language === 'All' ? 'Repositories' : `${language} Repositories`}
               </h2>
               <div className="flex items-center gap-4">
                 {lastUpdated && (
