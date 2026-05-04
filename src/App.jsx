@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { format, subDays, subMonths, subYears } from 'date-fns';
-import { Star, GitFork, CircleAlert, TrendingUp, Calendar, Code2, Globe, Tag, Sun, Moon, ChevronDown, ChevronUp } from 'lucide-react';
+import { Star, GitFork, CircleAlert, TrendingUp, Calendar, Code2, Globe, Tag, Sun, Moon, ChevronDown, ChevronUp, Twitter, ExternalLink, Share2 } from 'lucide-react';
 
 const TIMEFRAMES = [
   { id: 'daily', label: 'Today' },
@@ -35,6 +35,7 @@ function App() {
   const [isDark, setIsDark] = useState(true);
   const [isLangExpanded, setIsLangExpanded] = useState(true);
   const [isTopicExpanded, setIsTopicExpanded] = useState(true);
+  const [isXExpanded, setIsXExpanded] = useState(true);
 
   useEffect(() => {
     if (!isDark) {
@@ -198,6 +199,39 @@ function App() {
                   ))}
                 </div>
               </div>
+
+              <div>
+                <button 
+                  onClick={() => setIsXExpanded(!isXExpanded)}
+                  className="w-full text-sm font-semibold tracking-wider text-text-muted uppercase mb-2 flex items-center justify-between group"
+                >
+                  <div className="flex items-center gap-2">
+                    <Twitter className="w-4 h-4 group-hover:text-primary transition-colors" />
+                    X (Twitter) Trends
+                  </div>
+                  {isXExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                </button>
+                <div className={`flex flex-col gap-1 transition-all duration-300 overflow-hidden ${isXExpanded ? 'max-h-[500px] opacity-100 mt-4' : 'max-h-0 opacity-0'}`}>
+                  {[
+                    { label: '#BuildInPublic', query: 'buildinpublic' },
+                    { label: '#AI', query: 'AI' },
+                    { label: '#OpenSource', query: 'opensource' },
+                    { label: '#TechTrends', query: 'techtrends' },
+                    { label: topic !== 'All' ? `#${topic}` : '#Coding', query: topic !== 'All' ? topic : 'coding' }
+                  ].map(trend => (
+                    <a
+                      key={trend.label}
+                      href={`https://x.com/search?q=${encodeURIComponent(trend.query)}&src=typed_query`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-left px-3 py-2 text-sm rounded-lg text-text-muted hover:text-text-main hover:bg-surface flex justify-between items-center group/item"
+                    >
+                      {trend.label}
+                      <ExternalLink className="w-3 h-3 opacity-0 group-hover/item:opacity-100 transition-opacity" />
+                    </a>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
 
@@ -299,6 +333,20 @@ function App() {
                         <GitFork className="w-4 h-4" />
                         <span>{repo.forks_count.toLocaleString()}</span>
                       </div>
+
+                      <div className="flex-1" />
+
+                      <a 
+                        href={`https://x.com/search?q=${encodeURIComponent(repo.html_url)}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-surface border border-border/50 hover:bg-primary/10 hover:text-primary transition-all text-text-muted"
+                        onClick={(e) => e.stopPropagation()}
+                        title="See mentions on X"
+                      >
+                        <Share2 className="w-3.5 h-3.5" />
+                        <span>Social</span>
+                      </a>
                     </div>
                   </a>
                 ))}
