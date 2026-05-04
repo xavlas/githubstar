@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { format, subDays, subMonths, subYears } from 'date-fns';
-import { Star, GitFork, CircleAlert, TrendingUp, Calendar, Code2, Globe, Tag, Sun, Moon, ChevronDown, ChevronUp, Twitter, ExternalLink, Share2 } from 'lucide-react';
+import { Star, GitFork, CircleAlert, TrendingUp, Calendar, Code2, Globe, Tag, Sun, Moon, ChevronDown, ChevronUp, MessageCircle, ExternalLink, Share2 } from 'lucide-react';
 
 const TIMEFRAMES = [
   { id: 'daily', label: 'Today' },
@@ -105,7 +105,10 @@ function App() {
             <div className="p-2 bg-primary/20 rounded-xl">
               <TrendingUp className="w-6 h-6 text-primary" />
             </div>
-            <h1 className="text-xl font-semibold tracking-tight text-text-title">GitHub<span className="font-light text-text-muted">Trends</span></h1>
+            <div className="flex items-baseline gap-2">
+              <h1 className="text-xl font-semibold tracking-tight text-text-title">GitHub<span className="font-light text-text-muted">Trends</span></h1>
+              <span className="text-xs font-mono text-text-muted bg-surface-hover px-1.5 py-0.5 rounded border border-border">v1.0.0</span>
+            </div>
           </div>
 
           <div className="flex items-center gap-4">
@@ -206,7 +209,7 @@ function App() {
                   className="w-full text-sm font-semibold tracking-wider text-text-muted uppercase mb-2 flex items-center justify-between group"
                 >
                   <div className="flex items-center gap-2">
-                    <Twitter className="w-4 h-4 group-hover:text-primary transition-colors" />
+                    <MessageCircle className="w-4 h-4 group-hover:text-primary transition-colors" />
                     X (Twitter) Trends
                   </div>
                   {isXExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
