@@ -3,21 +3,43 @@
 @theme {
   --font-sans: 'Inter', system-ui, sans-serif;
   
-  --color-background: #0f1117;
-  --color-surface: #1a1d24;
-  --color-surface-hover: #22262f;
-  --color-border: #2e323e;
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-border: var(--border);
+  --color-text-main: var(--text-main);
+  --color-text-muted: var(--text-muted);
+  --color-text-title: var(--text-title);
   
   --color-primary: #3b82f6;
-  --color-primary-hover: #60a5fa;
+  --color-primary-hover: #2563eb;
   --color-accent: #8b5cf6;
 }
 
 @layer base {
   :root {
+    --background: #0f1117;
+    --surface: #1a1d24;
+    --surface-hover: #22262f;
+    --border: #2e323e;
+    --text-main: #e5e7eb;
+    --text-muted: #9ca3af;
+    --text-title: #ffffff;
     color-scheme: dark;
   }
+
+  :root.light {
+    --background: #f8fafc;
+    --surface: #ffffff;
+    --surface-hover: #f1f5f9;
+    --border: #e2e8f0;
+    --text-main: #334155;
+    --text-muted: #64748b;
+    --text-title: #0f172a;
+    color-scheme: light;
+  }
+
   body {
-    @apply bg-background text-gray-100 font-sans antialiased min-h-screen selection:bg-primary/30 selection:text-white;
+    @apply bg-background text-text-main font-sans antialiased min-h-screen transition-colors duration-300 selection:bg-primary/30;
   }
 }
